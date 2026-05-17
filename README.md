@@ -7,13 +7,13 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 
-A ground-up implementation of the **Transformer architecture** from the seminal paper [*"Attention Is All You Need"* (Vaswani et al., 2017)](https://arxiv.org/abs/1706.03762), built using **PyTorch** and **NumPy** — without relying on any high-level Transformer libraries.
+A ground-up implementation of the **Transformer architecture** from the seminal paper [*"Attention Is All You Need"* (Vaswani et al., 2017)](https://arxiv.org/abs/1706.03762), built using **PyTorch** and **NumPy** without relying on any high-level Transformer libraries.
 
 ---
 
 ## 📌 Description
 
-This repository walks through the complete Transformer architecture one component at a time — from raw attention math to a fully functional encoder-decoder model. Each module is implemented from first principles, with accompanying notebooks that visualize and validate every step.
+This repository walks through the complete Transformer architecture one component at a time from raw attention math to a fully functional encoder-decoder model. Each module is implemented from first principles, with accompanying notebooks that visualize and validate every step.
 
 The project is structured as a **progressive learning series**: each file builds on the previous, making it ideal both as a portfolio project and as a personal reference for understanding how modern LLMs work internally.
 
@@ -21,12 +21,12 @@ The project is structured as a **progressive learning series**: each file builds
 
 ## 💡 Motivation / Problem Statement
 
-The Transformer architecture is the backbone of virtually every modern NLP and AI system — GPT, BERT, T5, LLaMA, and beyond. Yet most practitioners treat it as a black box.
+The Transformer architecture is the backbone of virtually every modern NLP and AI system GPT, BERT, T5, LLaMA, and beyond. Yet most practitioners treat it as a black box.
 
 **The goals of this project:**
 - Deeply understand *why* attention works, not just *how* to call `nn.MultiheadAttention`
 - Build intuition for architectural decisions: why layer norm? why positional encoding? why multi-head?
-- Demonstrate ML depth beyond calling pre-built APIs — a critical skill for ML engineering roles
+- Demonstrate ML depth beyond calling pre-built APIs a critical skill for ML engineering roles
 
 ---
 
@@ -36,8 +36,8 @@ The Transformer architecture is the backbone of virtually every modern NLP and A
 - ✅ **Multi-Head Attention** with proper head splitting and concatenation
 - ✅ **Sinusoidal Positional Encoding** using NumPy
 - ✅ **Layer Normalization** implemented manually
-- ✅ **Transformer Encoder** — full stack with residual connections and FFN
-- ✅ **Transformer Decoder** — with masked self-attention and cross-attention
+- ✅ **Transformer Encoder** full stack with residual connections and FFN
+- ✅ **Transformer Decoder** with masked self-attention and cross-attention
 - ✅ **Full Encoder-Decoder Transformer** assembled end-to-end
 - ✅ **Training Notebook** with a working training loop
 
@@ -144,164 +144,34 @@ pip install torch numpy jupyter matplotlib
 > **Requirements:** Python 3.8+, PyTorch 2.x, NumPy 1.24+
 
 ---
-
-## 🚀 Usage Guide
-
-### Option 1: Follow the Progressive Notebooks
-
-Run the notebooks in order to build understanding component by component:
-
-```bash
-jupyter notebook
-```
-
-| Step | File | What You Learn |
-|---|---|---|
-| 1 | `01_Self_Attention.ipynb` | Q, K, V matrices; scaled dot-product attention |
-| 2 | `02_Mutlihead_Attention.ipynb` | Head splitting, parallel attention, concatenation |
-| 3 | `03_Positional_Encoding.ipynb` | Sinusoidal encoding; why position matters |
-| 4 | `04_Layer_Normalization.ipynb` | Layer norm vs batch norm; manual implementation |
-| 5 | `08_Transformer_Trainer_Notebook.ipynb` | Full model training end-to-end |
-
-### Option 2: Import the Modules Directly
-
-```python
-import torch
-from Transformer import Transformer  # 07_Transformer.py
-
-# Hyperparameters (matching the paper)
-src_vocab_size = 5000
-tgt_vocab_size = 5000
-d_model = 512
-num_heads = 8
-num_layers = 6
-d_ff = 2048
-max_seq_length = 100
-dropout = 0.1
-
-# Instantiate the model
-model = Transformer(
-    src_vocab_size, tgt_vocab_size,
-    d_model, num_heads, num_layers,
-    d_ff, max_seq_length, dropout
-)
-
-# Forward pass
-src = torch.randint(0, src_vocab_size, (32, 50))   # (batch, seq_len)
-tgt = torch.randint(0, tgt_vocab_size, (32, 49))
-
-output = model(src, tgt)
-print(output.shape)  # → (32, 49, tgt_vocab_size)
-```
-
-### Self-Attention — Core Implementation
-
-```python
-import torch
-import torch.nn.functional as F
-import math
-
-def scaled_dot_product_attention(Q, K, V, mask=None):
-    d_k = Q.size(-1)
-    scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(d_k)
-    
-    if mask is not None:
-        scores = scores.masked_fill(mask == 0, float('-inf'))
-    
-    attention_weights = F.softmax(scores, dim=-1)
-    return torch.matmul(attention_weights, V), attention_weights
-```
-
----
-
-## 📊 Results / Output
-
-Since this is an **architecture implementation project** (not a task-specific trained model), the primary output is a correctly shaped, trainable Transformer:
-
-| Component | Output Shape | Verification |
-|---|---|---|
-| Self-Attention | `(batch, seq_len, d_model)` | ✅ |
-| Multi-Head Attention | `(batch, seq_len, d_model)` | ✅ |
-| Positional Encoding | `(1, max_seq_len, d_model)` | ✅ |
-| Encoder Output | `(batch, seq_len, d_model)` | ✅ |
-| Decoder Output | `(batch, tgt_len, d_model)` | ✅ |
-| Full Transformer | `(batch, tgt_len, tgt_vocab_size)` | ✅ |
-
-The training notebook (`08`) demonstrates the model converging on a toy sequence-to-sequence task, validating the full forward and backward pass.
-
----
-
-## 🖼️ Screenshots / Demo
-
-> *Placeholder — add notebook screenshots here.*
-
-**Suggested screenshots to add:**
-- [ ] Attention weight heatmap from `01_Self_Attention.ipynb`
-- [ ] Sinusoidal positional encoding visualization from `03_Positional_Encoding.ipynb`
-- [ ] Training loss curve from `08_Transformer_Trainer_Notebook.ipynb`
-
----
-
 ## 🧠 Challenges & Learnings
 
 **Key challenges encountered:**
 
 - **Attention masking**: Correctly implementing the causal (look-ahead) mask in the decoder to prevent the model from attending to future tokens during training
 - **Multi-head reshaping**: Getting the batch dimensions right when splitting and recombining attention heads across `(batch, heads, seq_len, d_k)`
-- **Numerical stability**: Understanding *why* scaling by √d_k is necessary — without it, dot products grow large and softmax gradients vanish
+- **Numerical stability**: Understanding *why* scaling by √d_k is necessary without it, dot products grow large and softmax gradients vanish
 - **Residual connections**: Ensuring tensor shapes are compatible across the skip connections, particularly after projection layers
 
 **Key learnings:**
 - The Transformer's power comes from *parallel* attention computation vs. sequential RNN processing
-- Positional encoding doesn't need to be learned — fixed sinusoids generalize well
+- Positional encoding doesn't need to be learned fixed sinusoids generalize well
 - Layer norm applied *per token* (not per batch) is crucial for NLP stability
 - The decoder's two attention layers serve distinct purposes: one for target context, one for source context
 
 ---
 
-## 🔮 Future Improvements
-
-- [ ] **Train on a real task** — implement English→French translation using WMT dataset
-- [ ] **Add learning rate warmup** scheduler (as used in the original paper)
-- [ ] **Label smoothing** for better generalization
-- [ ] **Beam search decoding** for inference
-- [ ] **Visualization module** — interactive attention heatmaps with Matplotlib/Plotly
-- [ ] **BERT variant** — extend encoder-only with masked language modeling pre-training
-- [ ] **GPT variant** — extend decoder-only with causal language modeling
-- [ ] **Unit tests** for each component with `pytest`
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-```bash
-# Fork the repo and create a feature branch
-git checkout -b feature/gpt-variant
-
-# Make changes and commit
-git commit -m "feat: add GPT-style decoder-only variant"
-
-# Push and open a Pull Request
-git push origin feature/gpt-variant
-```
-
-Please keep PRs focused and include a short description of what was changed and why.
-
----
-
 ## 📄 License
 
-This project is licensed under the **MIT License** — feel free to use, adapt, and build on it.
+This project is licensed under the **MIT License** feel free to use, adapt, and build on it.
 
 ---
 
 ## 📚 References
 
-- Vaswani et al. (2017) — [*Attention Is All You Need*](https://arxiv.org/abs/1706.03762)
-- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) — Jay Alammar
-- [Harvard NLP — The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)
+- Vaswani et al. (2017) [*Attention Is All You Need*](https://arxiv.org/abs/1706.03762)
+- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) Jay Alammar
+- [Harvard NLP The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)
 
 ---
 
