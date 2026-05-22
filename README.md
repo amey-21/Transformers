@@ -1,4 +1,4 @@
-# 🤖 Transformer from Scratch
+# Transformer from Scratch
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?logo=pytorch&logoColor=white)
@@ -11,7 +11,7 @@ A ground-up implementation of the **Transformer architecture** from the seminal 
 
 ---
 
-## 📌 Description
+## Description
 
 This repository walks through the complete Transformer architecture one component at a time from raw attention math to a fully functional encoder-decoder model. Each module is implemented from first principles, with accompanying notebooks that visualize and validate every step.
 
@@ -19,7 +19,7 @@ The project is structured as a **progressive learning series**: each file builds
 
 ---
 
-## 💡 Motivation / Problem Statement
+## Motivation / Problem Statement
 
 The Transformer architecture is the backbone of virtually every modern NLP and AI system GPT, BERT, T5, LLaMA, and beyond. Yet most practitioners treat it as a black box.
 
@@ -30,20 +30,20 @@ The Transformer architecture is the backbone of virtually every modern NLP and A
 
 ---
 
-## ✨ Features
+## Features
 
-- ✅ **Self-Attention** implemented from scratch (scaled dot-product attention)
-- ✅ **Multi-Head Attention** with proper head splitting and concatenation
-- ✅ **Sinusoidal Positional Encoding** using NumPy
-- ✅ **Layer Normalization** implemented manually
-- ✅ **Transformer Encoder** full stack with residual connections and FFN
-- ✅ **Transformer Decoder** with masked self-attention and cross-attention
-- ✅ **Full Encoder-Decoder Transformer** assembled end-to-end
-- ✅ **Training Notebook** with a working training loop
+- **Self-Attention** implemented from scratch (scaled dot-product attention)
+- **Multi-Head Attention** with proper head splitting and concatenation
+- **Sinusoidal Positional Encoding** using NumPy
+- **Layer Normalization** implemented manually
+- **Transformer Encoder** full stack with residual connections and FFN
+- **Transformer Decoder** with masked self-attention and cross-attention
+- **Full Encoder-Decoder Transformer** assembled end-to-end
+- **Training Notebook** with a working training loop
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component | Technology |
 |---|---|
@@ -54,7 +54,7 @@ The Transformer architecture is the backbone of virtually every modern NLP and A
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 The implementation mirrors the original Transformer paper architecture:
 
@@ -105,7 +105,7 @@ Input Tokens
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Transformers/
@@ -126,7 +126,7 @@ Transformers/
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ```bash
 # Clone the repository
@@ -144,7 +144,7 @@ pip install torch numpy jupyter matplotlib
 > **Requirements:** Python 3.8+, PyTorch 2.x, NumPy 1.24+
 
 ---
-## 🧠 Challenges & Learnings
+## Challenges & Learnings
 
 **Key challenges encountered:**
 
@@ -161,13 +161,13 @@ pip install torch numpy jupyter matplotlib
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** feel free to use, adapt, and build on it.
 
 ---
 
-## 📚 References
+## References
 
 - Vaswani et al. (2017) [*Attention Is All You Need*](https://arxiv.org/abs/1706.03762)
 - [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) Jay Alammar
